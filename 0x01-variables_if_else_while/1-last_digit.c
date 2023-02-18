@@ -20,12 +20,12 @@ int maim(void)
 	}
 	else if ((n % 10) < 6 && (n % 10))
 	{
-		printf("Final digit of %d of %d and it is less than 6 and not 0\n", 
+		printf("Last digit of %d of %d and it is less than 6 and not 0\n", 
 				n, n % 10);
 	}
 	else
 	{
-		printf("Final digit of %d is %d and is 0\n", 
+		printf("Last digit of %d is %d and is 0\n", 
 				n, n % 10);
 	}
 	return (0);
