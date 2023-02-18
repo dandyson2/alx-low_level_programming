@@ -2,11 +2,11 @@
 #include <stdio.h>
 #include <time.h>
 /**
- * main - Prints the last digit of a randomly generated number and
+ * main - Displays the last digit of a randomly generated number and
  * if it is greater than 5, or less than 6, or 0.
  * Return: Always 0 (Success)
  */
-int maim(void)
+int main(void)
 {
 	int n;
 
