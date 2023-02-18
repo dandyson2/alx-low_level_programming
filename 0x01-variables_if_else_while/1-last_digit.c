@@ -3,7 +3,7 @@
 #include <stdio.h>
 /**
  * main: - Displays the last digit of a randomly generated number
- *
+ * and if it is greater than 5, less than 6, or 0.
  * Return: Always 0 (Success)
  */
 int main(void)
