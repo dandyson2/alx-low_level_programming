@@ -9,7 +9,7 @@ int main(void)
 {
 	int v, w;
 
-	for (v = 0; v < 100 v++)
+	for (v = 0; v < 100; v++)
 	{
 		for (w = 0; w < 100; w++)
 		{
