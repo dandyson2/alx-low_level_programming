@@ -1,6 +1,9 @@
+#include "main.h"
+
 /**
  * main - check the code.
- *
+ *@r: character to check
+
  * Return: Always 0.
  */
 int main(void)
