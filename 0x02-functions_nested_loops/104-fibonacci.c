@@ -10,7 +10,7 @@ int main(void)
 	unsigned long int z;
 	unsigned long int bef = 1;
 	unsigned long int aft = 2;
-	unsigned long int l = 1000000000;
+	unsigned long int l = 9999999997;
 	unsigned long int bef1;
 	unsigned long int bef2;
 	unsigned long int aft1;
