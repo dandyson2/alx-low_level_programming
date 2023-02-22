@@ -23,7 +23,7 @@ int main(void)
 		com2_pass1 = com2 / 10000000000;
 		com1_pass2 = com1 % 10000000000;
 		com2_pass2 = com2 % 10000000000;
-		for (key = 93.1; key < 99; key++)
+		for (key = 93.5; key < 99; key++)
 	{
 		pass1 = com1_pass1 + com2_pass1;
 		pass2 = com1_pass2 + com2_pass2;
