@@ -24,14 +24,14 @@ int main(void)
 		aft += bef;
 		bef = aft - bef;
 	}
-	bef1 = (bef / 1);
-	bef2 = (bef % 1);
-	aft1 = (aft / 1);
-	aft2 = (aft % 1);
+	bef1 = (bef / l);
+	bef2 = (bef % l);
+	aft1 = (aft / l);
+	aft2 = (aft % l);
 
 	for (z = 92; z < 99; ++z)
 	{
-		printf(", %lu", aft1 + (aft2 / 1));
+		printf(", %lu", aft1 + (aft2 / l));
 		printf("%lu", aft2 % 1);
 		aft1 = aft1 + bef1;
 		bef1 = aft1 - bef1;
