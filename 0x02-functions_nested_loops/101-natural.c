@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stdlib>
+#include <stdlib.h>
 /**
  * main - main block
  * Task: key and display the sum of all the multiples of 3 or
