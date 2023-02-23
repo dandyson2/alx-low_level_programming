@@ -1,11 +1,11 @@
-#include <stdio>
+#include "main.h"
 /**
+ * main - main block
  * print_number - print an integer
  * @n: integer
  * Return: Always
  */
 void print_number(int n)
-printf("%d\n", n);
 {
 
 unsigned int n1 = n;
