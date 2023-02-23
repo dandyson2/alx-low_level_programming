@@ -1,15 +1,14 @@
 #include "main.h"
 
 /**
- * print_line - function that draws a straight line
- * @v: integer
- * Return: 0
+ * print_line - draws a straight line
+ * @n: integer
  */
-void print_line(int v)
-{
-int u;
 
-for (u = 0; v < u; u++)
+void print_line(int n)
+{
+int i;
+for (i = 0; i < n; i++)
 {
 _putchar('_');
 }
