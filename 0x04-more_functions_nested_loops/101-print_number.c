@@ -1,14 +1,14 @@
-#include "main.h"
+#include <stdio>
 /**
  * print_number - print an integer
  * @n: integer
  * Return: Always
  */
 void print_number(int n)
+printf("%d\n", n);
 {
 
 unsigned int n1 = n;
-
 if (n < 0)
 {
 _putchar('-');
