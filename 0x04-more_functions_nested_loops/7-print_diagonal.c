@@ -1,6 +1,6 @@
 #include "main.h"
 /**
- * print_diagonal - draws diagonal line
+ * print_diagonal - draws a diagonal line
  * @n: integer
  */
 void print_diagonal(int n)
@@ -15,7 +15,7 @@ else
 {
 for (y = 1; y <= n; y++)
 {
-for (z = 1; z < y; y++)
+for (z = 1; z < y; z++)
 {
 _putchar(' ');
 }
