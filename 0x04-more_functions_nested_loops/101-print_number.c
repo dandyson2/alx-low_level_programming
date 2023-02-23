@@ -1,6 +1,5 @@
 #include "main.h"
 /**
- * main - main block
  * print_number - print an integer
  * @n: integer
  * Return: Always
