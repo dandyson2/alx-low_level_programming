@@ -13,9 +13,9 @@ _putchar('\n')
 }
 else
 {
-for (y = 1; y <= n; y++)
+for (y = l; y <= n; y++)
 {
-for (z = 1; z < y; z++)
+for (z = l; z < y; z++)
 {
 _putchar(' ');
 }
