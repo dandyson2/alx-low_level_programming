@@ -1,8 +1,9 @@
+#include "main.h"
 #include <stdio.h>
 #include <stdlib.h>
 /**
  * main - print the largest prime number
- * Return: 0 Always
+ * Return: Always
  */
 int main(void)
 {
@@ -20,6 +21,6 @@ if ((prime % div) == 0)
 prime /= div;
 }
 }
-printf("%Id\n", prime);
+printf("%ld\n", prime);
 return (0);
 }
