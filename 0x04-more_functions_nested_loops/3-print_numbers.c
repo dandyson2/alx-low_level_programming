@@ -1,4 +1,4 @@
-#include "maim.h"
+#include "main.h"
 
 /**
  * print_numbers - check for digit (0 to 9)
