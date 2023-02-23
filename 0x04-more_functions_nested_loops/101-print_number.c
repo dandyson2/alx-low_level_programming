@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 /**
+ * main - print number
  * print_number - print
  * @n: integer
  * Return: Always
