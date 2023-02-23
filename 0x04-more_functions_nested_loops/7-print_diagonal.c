@@ -2,6 +2,7 @@
 /**
  * print_diagonal - draws a diagonal line
  * @n: integer
+ * Return 0
  */
 void print_diagonal(int n)
 {
@@ -9,13 +10,13 @@ int y, z;
 
 if (n <= 0)
 {
-_putchar('\n')
+_putchar('\n');
 }
 else
 {
-for (y = l; y <= n; y++)
+for (y = 1; y <= n; y++)
 {
-for (z = l; z < y; z++)
+for (z = 1; z < y; z++)
 {
 _putchar(' ');
 }
