@@ -2,13 +2,13 @@
 
 /**
  * print_line - draws a straight line
- * @u: integer
+ * @n: integer
  */
 
-void print_line(int u)
+void print_line(int n)
 {
-int v;
-for (v = 0; v < u; i++)
+int i;
+for (i = 0; i < n; i++)
 {
 _putchar('_');
 }
