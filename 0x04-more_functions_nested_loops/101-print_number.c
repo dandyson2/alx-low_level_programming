@@ -6,6 +6,7 @@
  */
 void print_number(int n)
 {
+
 unsigned int n3;
 
 if (n < 0)
@@ -17,6 +18,7 @@ else
 {
 n3 = n;
 }
+
 if (n3 / 10)
 {
 print_numbers(n3 / 10);
