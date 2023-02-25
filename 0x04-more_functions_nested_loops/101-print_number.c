@@ -1,20 +1,28 @@
 #include "main.h"
+
 /**
  * print_number - print number
- * @n:  integer
- * Return: always
+ * @q:  integer
+ * Task: print the integer q
+ * Return: void
  */
-void print_number(int n);
+void print_number(int q);
 {
 
-unsigned int num = n;
+unsigned int num;
+
 if (n < 0)
 {
+num = - q;
 _putchar('-');
-num = -num;
 }
-if ((num / 10) > 0)
+else
+{
+num = q;
+}
+if (num / 10)
+{
 print_number(num / 10);
-
+}
 _putchar((num % 10) + '0');
 }
