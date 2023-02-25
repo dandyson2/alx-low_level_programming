@@ -1,18 +1,21 @@
 #include "main.h"
 
 /**
- * print_number - print an integer
- * @num:  integer to be printed
+ * print_number - print number
+ * @n:  integer
+ * Return: always
  */
-void print_number(int num)
+void print_number(int n)
 {
-for (int i = 1; i <= num; i++)
+
+unsigned int num = n;
+if (n < 0)
 {
-for (int j = 1; j <= i; j++)
-{
-int digit = i % 10;
-_putchar(digit + '0');
+_putchar('-');
+num = -num;
 }
-_putchar('\n');
-}
+if ((num / 10) > 0)
+print_number(num / 10);
+
+_putchar((num % 10) + '0');
 }
