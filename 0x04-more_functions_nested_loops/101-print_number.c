@@ -2,13 +2,12 @@
 
 /**
  * print_number - print number
- * @n:  integer
+ * @n: integer
  * Task: print the integer n
  * Return: void
  */
 void print_number(int n);
 {
-
 unsigned int number;
 
 if (n < 0)
@@ -20,6 +19,7 @@ else
 {
 number = n;
 }
+
 if (number / 10)
 {
 print_number(number / 10);
