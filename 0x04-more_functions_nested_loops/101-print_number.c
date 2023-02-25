@@ -2,27 +2,27 @@
 
 /**
  * print_number - print number
- * @q:  integer
- * Task: print the integer q
+ * @n:  integer
+ * Task: print the integer n
  * Return: void
  */
-void print_number(int q);
+void print_number(int n);
 {
 
-unsigned int num;
+unsigned int number;
 
 if (n < 0)
 {
-num = - q;
+number = -n;
 _putchar('-');
 }
 else
 {
-num = q;
+number = n;
 }
-if (num / 10)
+if (number / 10)
 {
-print_number(num / 10);
+print_number(number / 10);
 }
-_putchar((num % 10) + '0');
+_putchar((number % 10) + '0');
 }
