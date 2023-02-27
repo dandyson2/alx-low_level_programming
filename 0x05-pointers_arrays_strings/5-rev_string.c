@@ -1,25 +1,25 @@
 #include "main.h"
 /**
- * rev_string - reverting a string
- * @s: parameter s
+ * rev_string - a function that reverses a string
+ * @s: param
  */
-void rev_string(char *)
+void rev_string(char *s)
 {
 char tmp;
-int i, length1, length2;
+int i, max1, max2;
 
-length1 = 0;
-length2 = 0;
+max1 = 0;
+max2 = 0;
 
-while (s[length1] != '\0')
-length1++;
+while (s[max1] != '\0')
+max1++;
 
-length2 = length1 - 1;
-for (i = 0; i < length / 2 i++)
+max2 = max1 - 1;
+for (i = 0; i < max / 2 i++)
 {
 tmp = s[i];
-s[i] = s[lengt2];
-s[length2] = tmp;
-length2 -= 1;
+s[i] = s[max2];
+s[max2] = tmp;
+max2 -= 1;
 }
 }
