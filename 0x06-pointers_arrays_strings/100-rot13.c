@@ -2,10 +2,10 @@
 #include <stdio.h>
 /**
  * rot13 - a function that encodes a string using rot13
- * @r: ptr to string para
- * Return: *r
+ * @s: ptr to string para
+ * Return: *s
  */
-char *rot13(char *r)
+char *rot13(char *s)
 {
 	int y;
 	int z;
@@ -13,18 +13,17 @@ char *rot13(char *r)
 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 		char datarot[] =
 "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
-
-		for (y = 0; r[y] != '\0'; y++)
+		for (y = 0; s[y] != '\0'; y++)
 		{
 			for (z = 0; z < 52; z++)
 			{
-				if (r[y] == data1[z])
+				if (s[y] == data1[z])
 				{
-					r[y] = datarot[z];
+					s[y] = datarot[z];
 					break;
 				}
 			}
 		}
 
-		return (r);
+		return (s);
 {
