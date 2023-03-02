@@ -7,23 +7,21 @@
  */
 char *rot13(char *s)
 {
-	int y;
-	int z;
-	char data1[] =
-"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-		char datarot[] =
-"NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
-		for (y = 0; s[y] != '\0'; y++)
-		{
-			for (z = 0; z < 52; z++)
-			{
-				if (s[y] == data1[z])
-				{
-					s[y] = datarot[z];
-					break;
-				}
-			}
-		}
+int i;
+int j;
+char data1[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+char datarot[] = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
 
-		return (s);
+for (i = 0; s[i] != '\0'; i++)
+{
+for (j = 0; j < 52; j++)
+{
+if (s[i] == data1[j])
+{
+s[i] = datarot[j];
+break;
+}
+}
+}
+return (s);
 {
