@@ -1,14 +1,39 @@
 #include "main.h"
-#include <stdio.h>
-#include <string.h>
 /**
- * infinite_add - a function that adds two numbers
+ * rev_string - reverse array
+ * @n: integer parameters
+ * Return: 0
+ */
+
+void rev_string(char *n)
+{
+	int y = 0;
+	int z = 0;
+	char temp;
+
+	while (*(n + y) != '\0')
+	{
+		y++;
+	}
+	y--;
+
+	for (z = 0; z < y; z++, y--)
+	{
+		temp = *(n + z);
+		*(n + z) = *(n + y);
+		*(n + y) = temp;
+	}
+}
+
+/**
+ * infinite_add - a function that adds two number together
+ * @n1: first number
+ * @n2: second number
  * @r: buffer
  * @size_r: buffer size
- * @n1: number
- * @n2: number
- * Return: r
+ * Return: pointer to call
  */
+
 char *infinite_add(char *n1, char *n2, char *r, int size_r)
 {
 	int overflow = 0, y = 0, z = 0, digits = 0;
@@ -47,6 +72,6 @@ char *infinite_add(char *n1, char *n2, char *r, int size_r)
 	if (digits == size_r)
 		return (0);
 	*(r + digits) = '\0';
-	cap_string(r);
+	rev_string(r);
 	return (r);
 }
