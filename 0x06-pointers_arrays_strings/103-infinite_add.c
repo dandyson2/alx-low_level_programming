@@ -1,5 +1,6 @@
 #include "main.h"
 #include <stdio.h>
+#include <string.h>
 /**
  * infinite_add - a function that adds two numbers
  * @r: buffer
@@ -14,7 +15,7 @@ char *infinite_add(char *n1, char *n2, char *r, int size_r)
 	int val1 = 0, val2 = 0, temp_tot = 0;
 
 	while (*(n1 + y) != '\0')
-		i++;
+		y++;
 	while (*(n2 + z) != '\0')
 		z++;
 	y--;
@@ -46,6 +47,6 @@ char *infinite_add(char *n1, char *n2, char *r, int size_r)
 	if (digits == size_r)
 		return (0);
 	*(r + digits) = '\0';
-	rev_string(r);
+	cap_string(r);
 	return (r);
 }
