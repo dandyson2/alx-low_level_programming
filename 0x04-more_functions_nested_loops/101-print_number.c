@@ -5,20 +5,20 @@
  * @n: input
  * Return: void
  */
-void print_number(int n)
+void print_number((int n))
 {
-	unsigned int f;
+unsigned int f;
 
-	if (n < 0)
-	{
-		_putchar('-');
-		f = -n;
-	}
-	else
-	{
-		f = n;
-	}
-	if (f / 10 != 0)
-		print_number(f / 10);
-	_putchar((f % 10) + '0');
+if (n < 0)
+{
+_putchar('-');
+f = -n;
+}
+else
+{
+f = n;
+}
+if (f / 10 != 0)
+print_number(f / 10);
+_putchar((f % 10) + '0');
 }
