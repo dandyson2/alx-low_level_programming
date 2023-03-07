@@ -1,28 +1,24 @@
 #include "main.h"
-
+#include <stdio.h>
 /**
- * print_number - print number
- * @n: integer
- * Task: print the integer n
+ * print_number - function that prints an integer
+ * @n: input
  * Return: void
  */
-void print_number(int n);
+void print_number(int n)
 {
-unsigned int number;
+	unsigned int f;
 
-if (n < 0)
-{
-number = -n;
-_putchar('-');
-}
-else
-{
-number = n;
-}
-
-if (number / 10)
-{
-print_number(number / 10);
-}
-_putchar((number % 10) + '0');
+	if (n < 0)
+	{
+		_putchar('-');
+		f = -n;
+	}
+	else
+	{
+		f = n;
+	}
+	if (f / 10 != 0)
+		print_number(f / 10);
+	_putchar((f % 10) + '0');
 }
