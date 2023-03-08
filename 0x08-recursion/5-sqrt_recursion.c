@@ -1,36 +1,37 @@
 #include "main.h"
 /**
- * _evaluate - function sqrt
- * @i: input
- * @n: input
- * Return: evaluate sqrt
+ * mockRecursion - function sqrt
+ * @num: number
+ * @nSqrt: likely sqrt of number
+ * Return: sqrt of number -1 for error
  */
-int _evaluate(int i, int n)
+int mockRecursion(int num, int nSqrt)
 {
-	if (n == 0 || n == 1)
-		return (n);
-	else if (i * i < n)
-		return (_evaluate(i + 1, n));
-	else if (i * i == n)
-		return (i);
-	return (-1);
-	return (-1);
+	if ((nSqrt * nSqrt) == num)
+	{
+		return (nSqrt);
+	}
+	else
+	{
+		if ((nSqrt * nSqrt) > num)
+			return (-1);
+		else
+			return (mockRecursion(num, nSqrt + 1));
+	}
 }
 
 #include "main.h"
 /**
  * _sqrt_recursion - Your subconscious is looking for the dreamer
  * @n: input
- * Return: sqrt recursion
+ * Return: sqrt of n
+ * -1 if n does not have a natural sqrt
  */
 int _sqrt_recursion(int n)
 {
-	int i = 0;
 
-	if (i < 0)
+	if (n < 0)
 		return (-1);
-	else if
-	{
-		return (_evaluate(i, n));
-	}
+	else
+		return (mockRecursion(n, 0));
 }
