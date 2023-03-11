@@ -18,7 +18,7 @@ y++;
 
 z = 0;
 while (src[z] != '\0')
-{
+{		
 dest[y] = src[z];
 y++;
 z++;
