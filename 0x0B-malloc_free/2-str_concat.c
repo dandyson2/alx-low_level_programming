@@ -1,52 +1,50 @@
 #include "main.h"
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 /**
- * str_concat - function that concatenates two strings
+ * str_concat - concates two strings
  * NULL str is treated as an empty string
  * @s1: ptr to str
  * @s2: ptr to str
- * Return: ptr to newly allocated memory
- * contains s1, s2 and null byte
+ * Return: ptrr to newly allocated memory which has
+ * s1, s2 and null byte
  * NULL on failure
  */
 char *str_concat(char *s1, char *s2)
 {
-	unsigned int max1, max2 size, y, z;
-	char *rstr;
+	unsigned int len1, len2, size, y, z;
+	char *nstr;
 
 	if (s1 == NULL)
 		s1 = "";
-
 	if (s2 == NULL)
 		s2 = "";
 
-	max1 = 0;
-	while (s1[max1] != '\0')
-		max1++;
+	len1 = 0;
+	while (s1[len1] != '\0')
+		len1++;
+	len2 = 0;
+	while (s2[len2] != '\0')
+		len2++;
 
-	max2 = 0;
-	while (s2[max2] != '\0')
-		max2++;
+	size = len1 + len2;
 
-	size = max1 + max2;
-
-	rstr = malloc((sizeof(char) * size) + 1);
-	if (rstr == NULL)
+	nstr = malloc((sizeof(char) * size) + 1);
+	if (nstr == NULL)
 		return (NULL);
-
 	y = 0;
-	while (y < max1)
+	while (y < len1)
 	{
-		rstr[y] = s1[y];
+		nstr[y] = s1[y];
 		y++;
 	}
 	z = 0;
 	while (y <= size)
 	{
-		rstr[y] = s2[z];
+		nstr[y] = s2[z];
 		y++;
 		z++;
 	}
-	return (rstr);
+	return (nstr);
 }
+
