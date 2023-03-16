@@ -1,5 +1,5 @@
-#ifndef
-#define
+#ifndef MAIN_H
+#define MAIN_H
 int _putchar(char c);
 void *_puts(char *str);
 void *malloc_checked(unsigned int b);
