@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "main.h"
 
 int find_len(char *str);
@@ -169,7 +171,7 @@ void add_nums(char *final_prod, char *next_prod, int next_len)
  * contains non digits, the function exits with a status of 98
  * Return: 0 always
  */
-int main(argc, char *argv[])
+int main( int argc, char *argv[])
 {
 	char *final_prod, *next_prod;
 	int size, index, digit, zeroes = 0;
