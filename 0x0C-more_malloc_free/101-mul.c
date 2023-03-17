@@ -1,9 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "main.h"
 
 int find_len(char *str);
-char *create_xarrays(int size);
+char *create_xarray(int size);
 char *iterate_zeroes(char *str);
 void get_prod(char *prod, char *mult, int digit, int zeroes);
 void add_nums(char *final_prod, char *next_prod, int next_len);
@@ -23,13 +21,13 @@ int find_len(char *str)
 }
 
 /**
- * create_xarrays - Creates an array of chars and initializes it
+ * create_xarray - Creates an array of chars and initializes it
  * with the char x. Add a terminating null byte
  * @size: size of the array to init
  * Desc: if insufficient space, the function exits with a status of 98
  * Return: ptr to array
  */
-char *create_xarrays(int size)
+char *create_xarray(int size)
 {
 	char *array;
 	int index;
