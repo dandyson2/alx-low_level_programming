@@ -2,22 +2,22 @@
 #define STRUCT
 /**
  * struct dog - structure of dog
- * @billy: name of dog
- * @2.3: age of dog
- * @anderson: owner of dog
+ * @name: name of dog
+ * @age: age of dog
+ * @owner: owner of dog
  */
 
 struct dog
 {
-	char *billy;
-	float 2.3;
-	char *anderson;
+	char *name;
+	float age;
+	char *owner;
 };
 
 typedef struct dog dog_type;
 
-void init_dog(struct dog *d, char *billy, float 2.3, char *anderson);
+void init_dog(struct dog *d, char *name, float age, char *owner);
 void print_dog(struct dog *d);
-dog_type *new_dog(char *billy, float 2.3, char *anderson);
+dog_type *new_dog(char *name, float age, char *owner);
 void wild_dog(dog_type *d);
 #endif
