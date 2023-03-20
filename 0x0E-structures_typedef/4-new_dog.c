@@ -9,7 +9,7 @@
  */
 dog_t *new_dog(char *name, float age, char *owner)
 {
-	int p, aniN, aniO;
+	int i, aniN, aniO;
 
 	struct dog *my_dog = NULL;
 
@@ -28,10 +28,10 @@ dog_t *new_dog(char *name, float age, char *owner)
 		free(my_dog);
 		return (NULL);
 	}
-	for (p = 0; p <= aniN; p++)
-		my_dog->name[p] = name[p];
-	for (p = 0; p <= aniO; p++)
-		my_dog->owner[p] = owner[p];
+	for (i = 0; i <= aniN; i++)
+		my_dog->name[i] = name[i];
+	for (i = 0; i <= aniO; i++)
+		my_dog->owner[i] = owner[i];
 	my_dog->age = age;
 	return (my_dog);
 }
