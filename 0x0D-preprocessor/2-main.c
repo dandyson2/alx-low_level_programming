@@ -1,8 +1,11 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-int main()
-{
-	printf("%s\n", _FILE_);
-
-	return (0);
+/**
+ * main - prints name of file
+ * Return: 0
+ */
+int main(void){
+	printf("%s\n", __FILE__);
+	return 0;
 }
