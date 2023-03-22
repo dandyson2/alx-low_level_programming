@@ -10,28 +10,28 @@
  */
 int int_index(int *array, int size, int (*cmp)(int))
 {
-	int a, ele;
+	int i, res;
 
-	ele = -1;
+	res = -1;
 	if (array && cmp)
 	{
 		if (size <= 0)
 		{
-			return (ele);
+			return (res);
 		}
-		for (a = 0; a < size; a++)
+		for (i = 0; i < size; i++)
 		{
-			cmp(array[a]);
-			if (cmp(array[a]) > 0)
+			cmp(array[i]);
+			if (cmp(array[i]) > 0)
 			{
-				ele = 1;
+				res = 1;
 				break;
 			}
-			if ((cmp(array[a]) == (-1)))
+			if ((cmp(array[i]) == (-1)))
 			{
-				return (ele);
+				return (res);
 			}
 		}
 	}
-	return (ele);
+	return (res);
 }
