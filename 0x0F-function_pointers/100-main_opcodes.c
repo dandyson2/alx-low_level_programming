@@ -8,7 +8,7 @@
  */
 int main(int argc, char *argv[])
 {
-	int count, bytes
+	int count, bytes;
 
 	if (argc != 2)
 	{
