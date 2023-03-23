@@ -1,4 +1,4 @@
-#include "3-calc"
+#include "3-calc.h"
 
 /**
  * main - check arguments
