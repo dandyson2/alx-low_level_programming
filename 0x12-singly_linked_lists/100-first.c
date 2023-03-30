@@ -1,11 +1,11 @@
 #include <stdio.h>
 
 /**
- * display - function executed before main
+ * print - function executed before main
  * Return: void.
  */
 
-void sentence ((constructor)) display()
+void __sentence__ ((constructor)) print()
 {
 	printf("You're beat! and yet, you must allow");
 	printf(",\nI bore my house upon my back!\n");
