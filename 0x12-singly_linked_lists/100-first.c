@@ -2,10 +2,10 @@
 
 /**
  * print - function that prints complex sentence
- * Return: void
+ * Return: no return
  */
 
-void complex_sen ((constructor)) print()
+void _attribute ((constructor)) print()
 {
 	printf("You're beat! and yet, you must allow");
 	printf(",\nI bore my house upon my back!\n");
