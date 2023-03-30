@@ -5,7 +5,7 @@
  * Return: void.
  */
 
-void _attribute_ ((constructor)) print()
+void __attribute__ ((constructor)) print()
 {
 	printf("You're beat! and yet, you must allow");
 	printf(",\nI bore my house upon my back!\n");
