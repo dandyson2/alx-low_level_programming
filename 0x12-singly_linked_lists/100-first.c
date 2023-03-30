@@ -1,11 +1,11 @@
 #include <stdio.h>
 
 /**
- * print - function that prints complex sentence
- * Return: no return
+ * first - function executed before main
+ * Return: no return.
  */
 
-void _attribute ((constructor)) print()
+void __attribute__ ((constructor)) first()
 {
 	printf("You're beat! and yet, you must allow");
 	printf(",\nI bore my house upon my back!\n");
