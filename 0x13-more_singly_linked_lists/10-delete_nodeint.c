@@ -10,7 +10,7 @@
 int delete_nodeint_at_index(listint_t **head, unsigned int index)
 {
 	listint_t *xax, *faax = *head;
-	unsigned int node;
+	unsigned int v;
 
 	if (faax == NULL)
 		return (-1);
@@ -22,14 +22,14 @@ int delete_nodeint_at_index(listint_t **head, unsigned int index)
 
 		return (1);
 	}
-	for (node = 0; node < (index - 1); node++)
+	for (v = 0; v < (index - 1); v++)
 	{
 		if (faax->next == NULL)
 			return (-1);
 
 		faax = faax->next;
 	}
-	xax = faxx->next;
+	xax = faax->next;
 	faax->next = xax->next;
 	free(xax);
 
