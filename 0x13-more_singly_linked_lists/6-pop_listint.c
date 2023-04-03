@@ -1,4 +1,4 @@
-#include "singly.h"
+#include "lists.h"
 
 /**
  * pop_listint - function that deletes the head of
