@@ -1,4 +1,4 @@
-#include "singly.h"
+#include "lists.h"
 
 /**
  * add_nodeint - function that adds a new node at
