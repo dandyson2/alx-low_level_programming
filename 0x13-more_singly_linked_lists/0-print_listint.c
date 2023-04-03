@@ -1,4 +1,4 @@
-#include "singly.h"
+#include "lists.h"
 
 /**
  * print_listint - function that prints all the
