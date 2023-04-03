@@ -2,7 +2,7 @@
 
 /**
  * add_nodeint - function that adds a new node at
- * the beginning of a listint_t list.
+ * the beginning of a listint_t list
  * @head: ptr to head
  * @n: int to be used
  * Return: Addrrss of new node
