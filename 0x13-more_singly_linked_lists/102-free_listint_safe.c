@@ -1,11 +1,11 @@
 #include "lists.h"
 
 /**
- * link_listp_ - function that frees a linked list
+ * link_listp22 - function that frees a linked list
  * @head: head of list
  * Return: void
  */
-void link_listp_(listp_p **head)
+void link_listp2(listp_t **head)
 {
 	listp *altr;
 	listp *set;
@@ -57,7 +57,7 @@ size_t free_listint_safe(listint_t **h)
 			if (*h == mul->p)
 			{
 				*h = NULL;
-				link_listp_(&sub);
+				link_listp2(&sub);
 				return (git);
 			}
 		}
@@ -68,7 +68,7 @@ size_t free_listint_safe(listint_t **h)
 		git++;
 	}
 	*h = NULL;
-	link_listp_(&sub);
+	link_listp2(&sub);
 
 	return (git);
 }
