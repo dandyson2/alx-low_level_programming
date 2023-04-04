@@ -1,14 +1,14 @@
 #include "lists.h"
 
 /**
- * link_listp22 - function that frees a linked list
+ * link_listp2 - function that frees a linked list
  * @head: head of list
  * Return: void
  */
 void link_listp2(listp_t **head)
 {
-	listp *altr;
-	listp *set;
+	listp_t *altr;
+	listp_t *set;
 
 	if (head != NULL)
 	{
@@ -44,7 +44,7 @@ size_t free_listint_safe(listint_t **h)
 		if (div == NULL)
 			exit(98);
 
-		div->next = (void *)*h;
+		div->p = (void *)*h;
 		div->next = sub;
 		sub = div;
 
