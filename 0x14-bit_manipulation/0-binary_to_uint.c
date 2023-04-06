@@ -1,4 +1,4 @@
-#include "bit.h"
+#include "main.h"
 
 /**
  * binary_to_uint - function that converts a binary
