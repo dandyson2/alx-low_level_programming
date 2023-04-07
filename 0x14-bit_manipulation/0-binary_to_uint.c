@@ -8,7 +8,7 @@
  */
 unsigned int binary_to_uint(const char *b)
 {
-	unsigned int u;
+	unsigned int define;
 	int _unit, max;
 
 	if (!b)
@@ -27,9 +27,9 @@ unsigned int binary_to_uint(const char *b)
 		}
 		if (b[_unit] & 1)
 		{
-			u += max;
+			define += max;
 		}
 	}
-	return (u);
+	return (define);
 }
 
