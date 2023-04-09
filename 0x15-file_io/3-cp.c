@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 
 	file_from = open(argv[1], O_RDONLY);
 	file_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC | O_APPEND, 0664);
-	error_file(file_from, file_to, argv);
+	_file_ch_err(file_from, file_to, argv);
 
 	file_chars = 1024;
 	while (file_chars == 1024)
