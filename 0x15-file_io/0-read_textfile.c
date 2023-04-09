@@ -16,7 +16,7 @@ ssize_t read_textfile(const char *filename, size_t letters)
 {
 	int one;
 	ssize_t text_l, text_w;
-	char letter;
+	char *c_read;
 
 	if (filename == NULL)
 		return (0);
@@ -25,24 +25,24 @@ ssize_t read_textfile(const char *filename, size_t letters)
 	if (one == -1)
 		return (0);
 
-	letter = malloc(sizeof(char) * letters);
-	if (letter == NULL)
+	c_read = malloc(sizeof(char) * letters);
+	if (c_read == NULL)
 	{
 		close(one);
 		return (0);
 	}
 
-	text_l = read(one, letter, letters);
+	text_l = read(one, c_read, letters);
 	close(one);
 
 	if (text_l == -1)
 	{
-		free(letter);
+		free(c_read);
 		return (0);
 	}
 
-	text_w = write(STDOUT_FILENO, letter, text_l);
-	free(letter);
+	text_w = write(STDOUT_FILENO, c_read, text_l);
+	free(c_read);
 
 	if (text_l != text_w)
 		return (0);
