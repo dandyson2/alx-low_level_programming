@@ -8,30 +8,30 @@
  */
 int create_file(const char *filename, char *text_content)
 {
-	int _file.create;
-	int _file.letters;
+	int _file_create;
+	int _file_letters;
 	int _check_;
 
 	if (!filename)
 		return (-1);
 
-	_file.create open(filename, O_CREAT | O_WRONGLY | O_TRUNC, 0600);
+	_file_create = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
 
-	if (_file.create == -1)
+	if (_file_create == -1)
 		return (-1);
 
 	if (!text_content)
 		text_content = "";
 
-	for (_file.letters = 0; text_content[_file.letters]; _file.letters++)
+	for (_file_letters = 0; text_content[_file_letters]; _file_letters++)
 		;
 
-	_check_ write(_file.create, text_content, _file.letters);
+	_check_ =  write(_file_create, text_content, _file_letters);
 
 	if (_check_ == -1)
 		return (-1);
 
-	close(_file.create);
+	close(_file_create);
 
 	return (1);
 }
