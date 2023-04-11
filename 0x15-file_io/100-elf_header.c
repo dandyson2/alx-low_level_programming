@@ -1,8 +1,3 @@
-/*
- * File: 100-elf_header.c
- * Author: Ozioma V. Chukwumezie
- */
-
 #include <elf.h>
 #include <sys/types.h>
 #include <sys/stat.h>
