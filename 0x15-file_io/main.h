@@ -1,5 +1,6 @@
 #ifndef _MAIN_H
 #define _MAIN_H
+#define EI_NIDENT 16
 
 #include <stdio.h>
 #include <stdlib.h>
