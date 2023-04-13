@@ -1,3 +1,8 @@
+/*
+ * File: 100-elf_header.c
+ * Author: Ozioma V. Chukwumezie
+ */
+
 #include <elf.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -6,32 +11,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void evaluate_elf(unsigned char *alt_v);
-void dis_magic(unsigned char *alt_v);
-void dis_class(unsigned char *alt_v);
-void dis_data(unsigned char *alt_v);
-void dis_version(unsigned char *alt_v);
-void dis_os_abi(unsigned char *alt_v);
-void dis_abi_v(unsigned char *alt_v);
-void dis_type(unsigned int alt_path, unsigned char *alt_v);
-void dis_entry_pa(unsigned long int alt_path2, unsigned char *alt_v);
+void evaluate_elf(unsigned char *e_ident);
+void dis_magic(unsigned char *e_ident);
+void dis_class(unsigned char *e_ident);
+void dis_data(unsigned char *e_ident);
+void dis_version(unsigned char *e_ident);
+void dis_os_abi(unsigned char *e_ident);
+void dis_abi_v(unsigned char *e_ident);
+void dis_type(unsigned int alt_path, unsigned char *e_ident);
+void dis_entry_pa(unsigned long int e_entry, unsigned char *e_ident);
 void close_elf(int elf);
 
 /**
  * evaluate_elf - Checks if file is an ELF file
- * @alt_v: ptr to array that contains ELF magic numbers
+ * @e_ident: ptr to array that contains ELF magic numbers
  * Descrip: If file is not an ELF file, exit with 98
  */
-void evaluate_elf(unsigned char *alt_v)
+void evaluate_elf(unsigned char *e_ident)
 {
 	int first;
 
 	for (first = 0; first < 4; first++)
 	{
-		if (alt_v[first] != 127 &&
-		alt_v[first] != 'E' &&
-		alt_v[first] != 'L' &&
-		alt_v[first] != 'F')
+		if (e_ident[first] != 127 &&
+		e_ident[first] != 'E' &&
+		e_ident[first] != 'L' &&
+		e_ident[first] != 'F')
 		{
 			dprintf(STDERR_FILENO, "Error: Not an ELF file\n");
 			exit(98);
@@ -41,10 +46,10 @@ void evaluate_elf(unsigned char *alt_v)
 
 /**
  * dis_magic - Prints the magic numbers of an ELF header
- * @alt_v: ptr to array that contains ELF magic numbers
+ * @e_ident: ptr to array that contains ELF magic numbers
  * Descrip: Magic numbers seperated by spaces
  */
-void dis_magic(unsigned char *alt_v)
+void dis_magic(unsigned char *e_ident)
 {
 	int first;
 
@@ -52,7 +57,7 @@ void dis_magic(unsigned char *alt_v)
 
 	for (first = 0; first < EI_NIDENT; first++)
 	{
-		printf("%02x", alt_v[first]);
+		printf("%02x", e_ident[first]);
 
 		if (first == EI_NIDENT - 1)
 			printf("\n");
@@ -63,13 +68,13 @@ void dis_magic(unsigned char *alt_v)
 
 /**
  * dis_class - Prints the class of an ELF header
- * @alt_v: ptr to array that contains ELF class
+ * @e_ident: ptr to array that contains ELF class
  */
-void dis_class(unsigned char *alt_v)
+void dis_class(unsigned char *e_ident)
 {
 	printf("  Class:				");
 
-	switch (alt_v[EI_CLASS])
+	switch (e_ident[EI_CLASS])
 	{
 		case ELFCLASSNONE:
 			printf("none\n");
@@ -78,18 +83,18 @@ void dis_class(unsigned char *alt_v)
 			printf("ELF64\n");
 			break;
 		default:
-			printf("<unknown: %x>\n", alt_v[EI_CLASS]);
+			printf("<unknown: %x>\n", e_ident[EI_CLASS]);
 	}
 }
 
 /**
  * dis_data - Prints data of an ELF header
- * @alt_v: ptr to array that contains an ELF class
+ * @e_ident: ptr to array that contains an ELF class
  */
-void dis_data(unsigned char *alt_v)
+void dis_data(unsigned char *e_ident)
 {
 	printf("  Data:					");
-	switch (alt_v[EI_DATA])
+	switch (e_ident[EI_DATA])
 	{
 		case ELFDATANONE:
 			printf("none\n");
@@ -101,18 +106,18 @@ void dis_data(unsigned char *alt_v)
 			printf("2's complement, big endian\n");
 			break;
 		default:
-			printf("<unknown: %x>\n", alt_v[EI_CLASS]);
+			printf("<unknown: %x>\n", e_ident[EI_CLASS]);
 	}
 }
 
 /**
  * dis_version - Prints the version of an ELF header
- * @alt_v: ptr to array that contains an ELF version
+ * @e_ident: ptr to array that contains an ELF version
  */
-void dis_version(unsigned char *alt_v)
+void dis_version(unsigned char *e_ident)
 {
-	printf("  Version:				%d",		alt_v[EI_VERSION]);
-	switch (alt_v[EI_VERSION])
+	printf("  Version:				%d",		e_ident[EI_VERSION]);
+	switch (e_ident[EI_VERSION])
 	{
 		case EV_CURRENT:
 			printf(" (current)\n");
@@ -125,12 +130,12 @@ void dis_version(unsigned char *alt_v)
 
 /**
  * dis_os_abi - Prints the OS/ABI of an ELF header
- * @alt_v: ptr to array that contains an ELF version
+ * @e_ident: ptr to array that contains an ELF version
  */
-void dis_os_abi(unsigned char *alt_v)
+void dis_os_abi(unsigned char *e_ident)
 {
 	printf("  OS/ABI:				");
-	switch (alt_v[EI_OSABI])
+	switch (e_ident[EI_OSABI])
 	{
 		case ELFOSABI_NONE:
 			printf("UNIX - System V\n");
@@ -163,32 +168,33 @@ void dis_os_abi(unsigned char *alt_v)
 			printf("Standalone App\n");
 			break;
 		default:
-			printf("<unknown: %x>\n", alt_v[EI_OSABI]);
+			printf("<unknown: %x>\n", e_ident[EI_OSABI]);
 	}
 }
 
 /**
  * dis_abi_v - Prints the ABI of an ELF header
- * @alt_v: ptr to array that contains the ELF ABI version
+ * @e_ident: ptr to array that contains the ELF ABI version
  */
-void dis_abi_v(unsigned char *alt_v)
+void dis_abi_v(unsigned char *e_ident)
 {
-	printf("  ABI Version:				%d\n",	alt_v[EI_ABIVERSION]);
+	printf("  ABI Version:				%d\n",	e_ident[EI_ABIVERSION]);
 }
 
 /**
  * dis_type - Prints type of an ELF header
- * @alt_path: Type of ELF
- * @alt_v: ptr to array that contains the ELF class
+ * @e_type: Type of ELF
+ * @e_ident: ptr to array that contains the ELF class
  */
-void dis_type(unsigned int alt_path, unsigned char *alt_v)
+void dis_type(unsigned int e_type, unsigned char *e_ident)
 {
-	if (alt_v[EI_DATA] == ELFDATA2MSB)
-		alt_path >>= 8;
 
-		printf("  Type:			");
+	if (e_ident[EI_DATA] == ELFDATA2MSB)
+	e_type >>= 8;
 
-	switch (alt_path)
+		printf("  Type:				");
+
+	switch (e_type)
 	{
 		case ET_NONE:
 			printf("NONE (None)\n");
@@ -206,30 +212,30 @@ void dis_type(unsigned int alt_path, unsigned char *alt_v)
 			printf("CORE (Core file)\n");
 			break;
 		default:
-			printf("<unknown: %x>\n", alt_path);
+			printf("<unknown: %x>\n", e_type);
 		}
 }
 
 /**
  * dis_entry_pa - Prints the entry path of an ELF header
- * @alt_path2: Address of the ELF entry point
- * @alt_v: ptr to array that contains the ELF class
+ * @e_entry: Address of the ELF entry point
+ * @e_ident: ptr to array that contains the ELF class
  */
-void dis_entry_pa(unsigned long int alt_path2, unsigned char *alt_v)
+void dis_entry_pa(unsigned long int e_entry, unsigned char *e_ident)
 {
 	printf("  Entry point address:			");
 
-	if (alt_v[EI_DATA] == ELFDATA2MSB)
+	if (e_ident[EI_DATA] == ELFDATA2MSB)
 	{
-		alt_path2 = ((alt_path2 << 8) & 0xFF00FF00) | ((alt_path2 >> 8) & 0xFF00FF);
-		alt_path2 = (alt_path2 << 16) | (alt_path2 >> 16);
+		e_entry = ((e_entry << 8) & 0xFF00FF00) | ((e_entry >> 8) & 0xFF00FF);
+		e_entry = (e_entry << 16) | (e_entry >> 16);
 	}
 
-	if (alt_v[EI_CLASS] == ELFCLASS32)
-		printf("%#x\n", (unsigned int)alt_path2);
+	if (e_ident[EI_CLASS] == ELFCLASS32)
+		printf("%#x\n", (unsigned int)e_entry);
 
 	else
-		printf("%#lx\n", alt_path2);
+		printf("%#lx\n", e_entry);
 }
 
 /**
@@ -283,16 +289,16 @@ int main(int __attribute__((__unused__)) argc, char *argv[])
 		exit(98);
 	}
 
-	evaluate_elf(header->alt_v);
+	evaluate_elf(header->e_ident);
 	printf("ELF Header:\n");
-	dis_magic(header->alt_v);
-	dis_class(header->alt_v);
-	dis_data(header->alt_v);
-	dis_version(header->alt_v);
-	dis_os_abi(header->alt_v);
-	dis_abi_v(header->alt_v);
-	dis_type(header->alt_path, header->alt_v);
-	dis_entry_pa(header->alt_path2, header->alt_v);
+	dis_magic(header->e_ident);
+	dis_class(header->e_ident);
+	dis_data(header->e_ident);
+	dis_version(header->e_ident);
+	dis_os_abi(header->e_ident);
+	dis_abi_v(header->e_ident);
+	dis_type(header->e_type, header->e_ident);
+	dis_entry_pa(header->e_entry, header->e_ident);
 
 	free(header);
 	close_elf(y);
