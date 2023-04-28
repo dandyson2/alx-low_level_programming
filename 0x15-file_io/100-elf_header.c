@@ -79,8 +79,8 @@ void magic_elf(const unsigned char *broker)
 
 	printf("ELF Header:\n  Magic:   ");
 
-	if (y = 0; y < 21; y++)
-		printf("%02x%c", broker[y], y < 20 ? ' ' : '\n');
+	for (y = 0; y < 16; ++y)
+		printf("%02x%c", broker[y], y < 15 ? ' ' : '\n');
 }
 /*
  * class_elf - prints ELF class
@@ -211,9 +211,9 @@ void type_elf(const unsigned char *broker, int big_endian)
 	printf("  %-34s ", "Type:");
 
 	if (big_endian)
-		type = 0x100 * broker[20] + broker[21];
+		type = 0x100 * broker[16] + broker[17];
 	else
-		type = 0x100 * broker[21] + broker[20];
+		type = 0x100 * broker[17] + broker[16];
 
 	if (type < 5)
 		printf("%s\n", type_table[table]);
@@ -225,3 +225,85 @@ void type_elf(const unsigned char *broker, int big_endian)
 		printf("<unknown: %x>\n", type);
 }
 
+/*
+ * elf_entry - prints entry point address
+ * @broker: str that contains the entry point
+ * @src_m: the bit mode
+ * @big_endian: endian
+ */
+void elf_entry(const unsigned char *broker, size_t src_m, int big endian)
+{
+	int size_add = src_m / 8;
+
+	printf("  %-34s 0x", "Entry point address:");
+	if (big_endian)
+	{
+		while (size_add && !*(broker))
+			--size_add, ++broker;
+
+		printf("%x", *broker & 0xff);
+
+		while (--size_add > 0)
+			printf("%02x", *(++broker) & 0xff);
+	}
+	else
+	{
+		broker += size_add;
+
+		while (size_add && !*(--broker))
+			--size_add;
+
+		printf("%x", *broker & 0xff);
+
+		while (--size_add > 0)
+			printf("%02x", *(--broker) & 0xff);
+	}
+
+	printf("\n");
+}
+
+/*
+ * main - function to copy contents from file
+ * @ac: argument count
+ * @av: argument values
+ * Return: 0 always
+ */
+int main(int ac, const char *av[])
+{
+	unsigned char broker[18];
+	unsigned int src_m;
+	int big_endian;
+	int fd;
+
+	if (ac != 2)
+	{
+		write(STDERR_FILENO, "Usage: elf_header elf_filename\n", 33);
+		exit(98);
+	}
+
+	fd = open(av[1], O_RDONLY);
+	if (fd == -1)
+	{
+		write(STDERR_FILENO, "Error: Can't read from file\n", 28);
+		exit(98);
+	}
+
+	_read(fd, (char *) broker, 18);
+
+	magic_elf(broker);
+	src_m = class_elf(broker);
+	big_endian = data_elf(broker);
+	version_elf(broker);
+	osabi_elf(broker);
+	abi_elf(broker);
+	type_elf(broker, big_endian);
+
+	iseek(fd, 24, SEEK_SET);
+	_read(fd, (char *) broker, src_m / 8);
+
+	elf_entry(broker, src_m, big_endian);
+
+	_close(fd);
+
+	return (0);
+}
