@@ -255,28 +255,28 @@ void close_elf(int elf)
 /**
  * main - display contents in the ELF header
  * at the start of an ELF file
- * @argc: arguement number to programm
- * @argv: array of pointers to arguements
+ * @ac: argument number to programm
+ * @av: array of pointers to arguments
  * Return: 0
  * Descrip: if file is not an ELF file,
  * if function fails, exit with code 98
  */
-int main(int __attribute__((__unused__)) argc, char *argv[])
+int main(int __attribute__((__unused__)) ac, char *av[])
 {
 	Elf64_Ehdr *header;
 	int r, w;
 
-	r = open(argv[1], O_RDONLY);
+	r = open(av[1], O_RDONLY);
 	if (r == -1)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
+		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", av[1]);
 		exit(98);
 	}
 	header = malloc(sizeof(Elf64_Ehdr));
 	if (header == NULL)
 	{
 		close_elf(r);
-		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
+		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", av[1]);
 		exit(98);
 	}
 	w = read(r, header, sizeof(Elf64_Ehdr));
@@ -284,7 +284,7 @@ int main(int __attribute__((__unused__)) argc, char *argv[])
 	{
 		free(header);
 		close_elf(r);
-		dprintf(STDERR_FILENO, "Error: `%s`: No such file\n", argv[1]);
+		dprintf(STDERR_FILENO, "Error: `%s`: No such file\n", av[1]);
 		exit(98);
 	}
 	check_elf(header->e_ident);
