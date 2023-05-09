@@ -80,7 +80,7 @@ void stmp_class(unsigned char *e_ident)
 		printf("ELF32\n");
 		break;
 	case ELFCLASS64:
-		printf("ELF64\n");
+		printf("ELF32\n");
 		break;
 	default:
 		printf("<unknown: %x>\n", e_ident[EI_CLASS]);
@@ -263,23 +263,23 @@ void close_elf(int elf)
  */
 int main(int __attribute__((__unused__)) argc, char *argv[])
 {
-	Elf64_Ehdr *header;
+	Elf32_Ehdr *header;
 	int r, w;
 
-	r = open(av[1], O_RDONLY);
+	r = open(argv[1], O_RDONLY);
 	if (r == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
 		exit(98);
 	}
-	header = malloc(sizeof(Elf64_Ehdr));
+	header = malloc(sizeof(Elf32_Ehdr));
 	if (header == NULL)
 	{
 		close_elf(r);
 		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
 		exit(98);
 	}
-	w = read(r, header, sizeof(Elf64_Ehdr));
+	w = read(r, header, sizeof(Elf32_Ehdr));
 	if (w == -1)
 	{
 		free(header);
