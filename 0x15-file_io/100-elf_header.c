@@ -7,7 +7,7 @@
 #include <sys/types.h>
 
 
-void explain_elf(unsigned char *e_ident);
+void check_elf(unsigned char *e_ident);
 void stmp_magic(unsigned char *e_ident);
 void stmp_class(unsigned char *e_ident);
 void stmp_data(unsigned char *e_ident);
@@ -16,7 +16,7 @@ void stmp_abi(unsigned char *e_ident);
 void stmp_osabi(unsigned char *e_ident);
 void stmp_type(unsigned int e_type, unsigned char *e_ident);
 void stmp_entry(unsigned long int e_entry, unsigned char *e_ident);
-void susp_elf(int elf);
+void close_elf(int elf);
 
 /**
  * explain_elf - check if a file is an ELF file
@@ -24,16 +24,16 @@ void susp_elf(int elf);
  * Descrip: if file is not an ELF file, exit with code 98
  */
 
-void explain_elf(unsigned char *e_ident)
+void check_elf(unsigned char *e_ident)
 {
-	int first;
+	int index;
 
-	for (first = 0; first < 4; first++)
+	for (index = 0; index < 4; index++)
 	{
-		if (e_ident[first] != 127 &&
-			e_ident[first] != 'E' &&
-			e_ident[first] != 'L' &&
-			e_ident[first] != 'F')
+		if (e_ident[index] != 127 &&
+			e_ident[index] != 'E' &&
+			e_ident[index] != 'L' &&
+			e_ident[index] != 'F')
 		{
 			dprintf(STDERR_FILENO, "Error: Not an ELF file\n");
 			exit(98);
@@ -48,15 +48,15 @@ void explain_elf(unsigned char *e_ident)
  */
 void stmp_magic(unsigned char *e_ident)
 {
-	int first;
+	int index;
 
 	printf("  Magic:   ");
 
-	for (first = 0; first < EI_NIDENT; first++)
+	for (index = 0; index < EI_NIDENT; index++)
 	{
-		printf("%02x", e_ident[first]);
+		printf("%02x", e_ident[index]);
 
-		if (first == EI_NIDENT - 1)
+		if (index == EI_NIDENT - 1)
 			printf("\n");
 		else
 			printf(" ");
@@ -239,11 +239,11 @@ void stmp_entry(unsigned long int e_entry, unsigned char *e_ident)
 }
 
 /**
- * susp_elf - close an ELF file
+ * close_elf - close an ELF file
  * @elf: ELF file descriptor
  * Descrip: if file cannot be closed, exit with code 98
  */
-void susp_elf(int elf)
+void close_elf(int elf)
 {
 	if (close(elf) == -1)
 	{
@@ -275,7 +275,7 @@ int main(int __attribute__((__unused__)) argc, char *argv[])
 	header = malloc(sizeof(Elf64_Ehdr));
 	if (header == NULL)
 	{
-		susp_elf(r);
+		close_elf(r);
 		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
 		exit(98);
 	}
@@ -283,11 +283,11 @@ int main(int __attribute__((__unused__)) argc, char *argv[])
 	if (w == -1)
 	{
 		free(header);
-		susp_elf(r);
+		close_elf(r);
 		dprintf(STDERR_FILENO, "Error: `%s`: No such file\n", argv[1]);
 		exit(98);
 	}
-	examine_elf(header->e_ident);
+	check_elf(header->e_ident);
 	printf("ELF Header:\n");
 	stmp_magic(header->e_ident);
 	stmp_class(header->e_ident);
@@ -299,6 +299,6 @@ int main(int __attribute__((__unused__)) argc, char *argv[])
 	stmp_entry(header->e_entry, header->e_ident);
 
 	free(header);
-	susp_elf(r);
+	close_elf(r);
 	return (0);
 }
