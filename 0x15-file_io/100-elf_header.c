@@ -80,7 +80,7 @@ void stmp_class(unsigned char *e_ident)
 		printf("ELF32\n");
 		break;
 	case ELFCLASS64:
-		printf("ELF32\n");
+		printf("ELF64\n");
 		break;
 	default:
 		printf("<unknown: %x>\n", e_ident[EI_CLASS]);
