@@ -1,309 +1,304 @@
-
-
-
 #include <elf.h>
-#include <stdlib.h>
 #include <unistd.h>
-#include <fcntl.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
-/*
- * compare_strings - function that compares two strings
- * @str1: string 1
- * @str2: string 2
- * @n: bytes to compare
- * Return: 0 if first n bytes of str1 and str2 are equals,
- * otherwise, return a number that is not 0
+
+void explain_elf(unsigned char *e_ident);
+void stmp_magic(unsigned char *e_ident);
+void stmp_class(unsigned char *e_ident);
+void stmp_data(unsigned char *e_ident);
+void stmp_version(unsigned char *e_ident);
+void stmp_abi(unsigned char *e_ident);
+void stmp_osabi(unsigned char *e_ident);
+void stmp_type(unsigned int e_type, unsigned char *e_ident);
+void stmp_entry(unsigned long int e_entry, unsigned char *e_ident);
+void susp_elf(int elf);
+
+/**
+ * explain_elf - check if a file is an ELF file
+ * @e_ident: ptr to an array
+ * Descrip: if file is not an ELF file, exit with code 98
  */
-int compare_strings(const char *str1, const char *str2, size_t n)
+
+void explain_elf(unsigned char *e_ident)
 {
-	for (; n && *str1 && *str2; --n, ++str1, ++str2)
-	{
-		if (*str1 != *str2)
-			return (*str1 - *str2);
-	}
+	int first;
 
-	if (n)
+	for (first = 0; first < 4; first++)
 	{
-		if (*str1)
-			return (1);
-		if (*str2)
-			return (-1);
+		if (e_ident[first] != 127 &&
+			e_ident[first] != 'E' &&
+			e_ident[first] != 'L' &&
+			e_ident[first] != 'F')
+		{
+			dprintf(STDERR_FILENO, "Error: Not an ELF file\n");
+			exit(98);
+		}
 	}
-
-	return (0);
 }
 
-/*
- * close_fd - function to close a file descriptor, print error
- * message if fails
- * @fd: file descriptor to close
+/**
+ * stmp_magic - print magic numbers of an ELF header
+ * @e_ident: ptr to array that contains ELF magic numbers
+ * Descrip: magic numbers are seperated by spaces
  */
-void close_fd(int fd)
+void stmp_magic(unsigned char *e_ident)
 {
-	if (close(fd) != -1)
-		return;
-	write(STDERR_FILENO, "Error: Can't close fd\n", 44);
-	exit(98);
-}
+	int first;
 
-/*
- * read_from_fd - function that reads a file
- * @fd: file descriptor to read from
- * @inter: the buffer to write to
- * @num: number of bytes to read
- */
+	printf("  Magic:   ");
 
-void read_from_fd(int fd, char *inter, size_t num)
-{
-	if (read(fd, inter, num) != -1)
-		return;
-	write(STDERR_FILENO, "Error: Can't read from file\n", 77);
-	close_fd(fd);
-	exit(98);
-}
-
-/*
- * magic_elf - prints ELF magic
- * @broker: ELF header
- */
-void magic_elf(const unsigned char *broker)
-{
-	unsigned int y;
-
-	if (_strncmp((const char *)broker, ELFMAG, 4))
+	for (first = 0; first < EI_NIDENT; first++)
 	{
-		write(STDERR_FILENO, "Error: Not an ELF file\n", 43);
-		exit(98);
+		printf("%02x", e_ident[first]);
+
+		if (first == EI_NIDENT - 1)
+			printf("\n");
+		else
+			printf(" ");
 	}
-
-	printf("ELF Header:\n  Magic:   ");
-
-	for (y = 0; y < 16; ++y)
-		printf("%02x%c", broker[y], y < 15 ? ' ' : '\n');
 }
-/*
- * class_elf - prints ELF class
- * @broker: ELF header
- * Return: bit 32 or 64
+
+/**
+ * stmp_class - print class of an ELF header
+ * @e_ident: ptr to array that contains the ELF class
  */
-size_t class_elf(const unsigned char *broker)
+void stmp_class(unsigned char *e_ident)
 {
-	printf("   %-34s ", "Class:");
+	printf("  Class:				");
 
-	if (broker[EI_CLASS] == ELFCLASS64)
+	switch (e_ident[EI_CLASS])
 	{
-		printf("ELF64\n");
-		return (64);
-	}
-
-	if (broker[EI_CLASS] == ELFCLASS32)
-	{
+	case ELFCLASSNONE:
+		printf("none\n");
+		break;
+	case ELFCLASS32:
 		printf("ELF32\n");
-		return (32);
+		break;
+	case ELFCLASS64:
+		printf("ELF64\n");
+		break;
+	default:
+		printf("<unknown: %x>\n", e_ident[EI_CLASS]);
 	}
-
-	printf("<unknown: %x>\n", broker[EI_CLASS]);
-	return (32);
 }
 
-/*
- * data_elf - prints ELF data
- * @broker: ELF header
- * Return: 1 if big endian, 0 otherwise
+/**
+ * stmp_data - print the data of an ELF header
+ * @e_ident: ptr to array containing an ELF data
  */
-int data_elf(const unsigned char *broker)
+void stmp_data(unsigned char *e_ident)
 {
-	printf("   %-34s ", "Data:");
-
-	if (broker[EI_DATA] == ELFDATA2MSB)
+	printf("  Data:				");
+	switch (e_ident[EI_DATA])
 	{
-		printf("2's complement, big endian\n");
-		return (1);
-	}
-
-	if (broker[EI_DATA] == ELFDATA2LSB)
-	{
+	case ELFDATANONE:
+		printf("none\n");
+		break;
+	case ELFDATA2LSB:
 		printf("2's complement, little endian\n");
-		return (0);
+		break;
+	case ELFDATA2MSB:
+		printf("2's complement, big endian\n");
+		break;
+	default:
+		printf("<unknown: %x>\n", e_ident[EI_CLASS]);
 	}
-
-	printf("Invalid data encoding\n");
-	return (0);
 }
 
-/*
- * version_elf - prints ELF version
- * @broker: ELF header
+/**
+ * stmp_version - print version of an ELF header
+ * @e_ident: ptr to array that contains an ELF version
  */
-void version_elf(const unsigned char *broker)
+void stmp_version(unsigned char *e_ident)
 {
-	printf("   %-34s %u", "Version:", broker[EI_VERSION]);
+	printf("  Version:				%d",				e_ident[EI_VERSION]);
 
-	if (broker[EI_VERSION] == EV_CURRENT)
+	switch (e_ident[EI_VERSION])
+	{
+	case EV_CURRENT:
 		printf(" (current)\n");
-	else
+		break;
+	default:
 		printf("\n");
-}
-
-/*
- * osabi_elf - print ELF OS/ABI
- * @broker: ELF header
- */
-void osabi_elf(const unsigned char *broker)
-{
-	const char *os_table[19] = {
-		"UNIX - System V",
-		"UNIX - HP-UX",
-		"UNIX - NetBSD",
-		"UNIX - GNU",
-		"<unknown: 4>",
-		"<unknown: 5>",
-		"UNIX - Solaris",
-		"UNIX - AIX",
-		"UNIX - IRIX",
-		"UNIX - FreeBSD",
-		"UNIX - Tru64",
-		"UNIX - Modesto",
-		"UNIX - OpenBSD",
-		"VMS - OpenVMS",
-		"HP - Non-Stop Kernel",
-		"AROS",
-		"FenixOS",
-		"Nuxi - CloudABI",
-		"Stratus Technologies OpenVOS"
-	};
-
-	printf("  %-34s ", "OS/ABI:");
-
-	if (broker[EI_OSABI] < 19)
-		printf("%s\n", os_table[(unsigned int) broker[EI_OSABI]]);
-	else
-		printf("<unknown: %x>\n", broker[EI_OSABI]);
-}
-
-/*
- * abi_elf - prints ELF ABI version
- * @broker: ELF header
- */
-void abi_elf(const unsigned char *broker)
-{
-	printf("  %-34s %u\n", "ABI Version:", broker[EI_ABIVERSION]);
-}
-
-/*
- * type_elf - prints ELF type
- * @broker: ELF head
- * @big_endian: endian
- */
-void type_elf(const unsigned char *broker, int big_endian)
-{
-	char *type_table[5] = {
-		"NONE (No file type)",
-		"REL (Relocatable file)",
-		"EXEC (Executable file)",
-		"DYN (Shared object file)",
-		"CORE (Core file)"
-	};
-
-	unsigned int type;
-
-	printf("  %-34s ", "Type:");
-
-	if (big_endian)
-		type = 0x100 * broker[16] + broker[17];
-	else
-		type = 0x100 * broker[17] + broker[16];
-
-	if (type < 5)
-		printf("%s\n", type_table[table]);
-	else if (type >= ET_LOOS && type <= ET_HIOS)
-		printf("OS Specific: (%4x)\n", type);
-	else if (type >= ET_LOPROC && type <= ET_HIPROC)
-		printf("Processor Specific: (%4x)\n", type);
-	else
-		printf("<unknown: %x>\n", type);
-}
-
-/*
- * elf_entry - prints entry point address
- * @broker: str that contains the entry point
- * @src_m: the bit mode
- * @big_endian: endian
- */
-void elf_entry(const unsigned char *broker, size_t src_m, int big endian)
-{
-	int size_add = src_m / 8;
-
-	printf("  %-34s 0x", "Entry point address:");
-	if (big_endian)
-	{
-		while (size_add && !*(broker))
-			--size_add, ++broker;
-
-		printf("%x", *broker & 0xff);
-
-		while (--size_add > 0)
-			printf("%02x", *(++broker) & 0xff);
+		break;
 	}
-	else
+}
+
+/**
+ * stmp_osabi - print the OS/ABI of an ELF header
+ * @e_ident: ptr to array that contains OS/ABI
+ */
+void stmp_osabi(unsigned char *e_ident)
+{
+	printf("  OS/ABI:				");
+
+	switch (e_ident[EI_OSABI])
 	{
-		broker += size_add;
+	case ELFOSABI_NONE:
+		printf("UNIX - System V\n");
+		break;
+	case ELFOSABI_HPUX:
+		printf("UNIX - HP-UX\n");
+		break;
+	case ELFOSABI_NETBSD:
+		printf("UNIX - NetBSD\n");
+		break;
+	case ELFOSABI_LINUX:
+		printf("UNIX - Linux\n");
+		break;
+	case ELFOSABI_SOLARIS:
+		printf("UNIX - Solaris\n");
+		break;
+	case ELFOSABI_IRIX:
+		printf("UNIX - IRIX\n");
+		break;
+	case ELFOSABI_FREEBSD:
+		printf("UNIX - FreeBSD\n");
+		break;
+	case ELFOSABI_TRU64:
+		printf("UNIX - TRU64\n");
+		break;
+	case ELFOSABI_ARM:
+		printf("ARM\n");
+		break;
+	case ELFOSABI_STANDALONE:
+		printf("Standalone App\n");
+		break;
+	default:
+		printf("<unknown: %x>\n", e_ident[EI_OSABI]);
+	}
+}
 
-		while (size_add && !*(--broker))
-			--size_add;
+/**
+ * stmp_abi - print the ABI version of an ELF header
+ * @e_ident: ptr to array that contains ABI version of ELF
+ */
+void stmp_abi(unsigned char *e_ident)
+{
+	printf("  ABI Version:				%d\n",					e_ident[EI_ABIVERSION]);
+}
 
-		printf("%x", *broker & 0xff);
+/**
+ * stmp_type - print type of an ELF header
+ * @e_ident: ptr to array that contains an ELF type
+ * @e_type: ELF type
+ */
+void stmp_type(unsigned int e_type, unsigned char *e_ident)
+{
+	if (e_ident[EI_DATA] == ELFDATA2MSB)
+		e_type >>= 8;
 
-		while (--size_add > 0)
-			printf("%02x", *(--broker) & 0xff);
+	printf("  Type:				");
+	switch (e_type)
+	{
+	case ET_NONE:
+		printf("NONE (none)\n");
+		break;
+	case ET_REL:
+		printf("REL (Relocatable file)\n");
+		break;
+	case ET_EXEC:
+		printf("EXEC (Executable file)\n");
+		break;
+	case ET_DYN:
+		printf("DYN (Shared object file)\n");
+		break;
+	case ET_CORE:
+		printf("CORE (Core file)\n");
+		break;
+	default:
+		printf("<unknown: %x>\n", e_type);
+	}
+}
+
+/**
+ * stmp_entry - print entry point of an ELF header
+ * @e_ident: ptr to array that contains an ELF class
+ * @e_entry: address of ELF entry point
+ */
+void stmp_entry(unsigned long int e_entry, unsigned char *e_ident)
+{
+	printf("  Entry point address:			");
+
+	if (e_ident[EI_DATA] == ELFDATA2MSB)
+	{
+		e_entry = ((e_entry << 8) & 0xFF00FF00) | ((e_entry >> 8) & 0xFF00FF);
+		e_entry = (e_entry << 16) | (e_entry >> 16);
 	}
 
-	printf("\n");
+	if (e_ident[EI_CLASS] == ELFCLASS32)
+		printf("%#x\n", (unsigned int)e_entry);
+
+	else
+		printf("%#lx\n", e_entry);
 }
 
-/*
- * main - function to copy contents from file
- * @ac: argument count
- * @av: argument values
- * Return: 0 always
+/**
+ * susp_elf - close an ELF file
+ * @elf: ELF file descriptor
+ * Descrip: if file cannot be closed, exit with code 98
  */
-int main(int ac, const char *av[])
+void susp_elf(int elf)
 {
-	unsigned char broker[18];
-	unsigned int src_m;
-	int big_endian;
-	int fd;
-
-	if (ac != 2)
+	if (close(elf) == -1)
 	{
-		write(STDERR_FILENO, "Usage: elf_header elf_filename\n", 33);
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", elf);
 		exit(98);
 	}
+}
 
-	fd = open(av[1], O_RDONLY);
-	if (fd == -1)
+/**
+ * main - display contents in the ELF header
+ * at the start of an ELF file
+ * @argc: arguement number to programm
+ * @argv: array of pointers to arguements
+ * Return: 0
+ * Descrip: if file is not an ELF file,
+ * if function fails, exit with code 98
+ */
+int main(int __attribute__((__unused__)) argc, char *argv[])
+{
+	Elf64_Ehdr *header;
+	int r, w;
+
+	r = open(argv[1], O_RDONLY);
+	if (r == -1)
 	{
-		write(STDERR_FILENO, "Error: Can't read from file\n", 28);
+		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
 		exit(98);
 	}
+	header = malloc(sizeof(Elf64_Ehdr));
+	if (header == NULL)
+	{
+		susp_elf(r);
+		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
+		exit(98);
+	}
+	w = read(r, header, sizeof(Elf64_Ehdr));
+	if (w == -1)
+	{
+		free(header);
+		susp_elf(r);
+		dprintf(STDERR_FILENO, "Error: `%s`: No such file\n", argv[1]);
+		exit(98);
+	}
+	examine_elf(header->e_ident);
+	printf("ELF Header:\n");
+	stmp_magic(header->e_ident);
+	stmp_class(header->e_ident);
+	stmp_data(header->e_ident);
+	stmp_version(header->e_ident);
+	stmp_osabi(header->e_ident);
+	stmp_abi(header->e_ident);
+	stmp_type(header->e_type, header->e_ident);
+	stmp_entry(header->e_entry, header->e_ident);
 
-	_read(fd, (char *) broker, 18);
-
-	magic_elf(broker);
-	src_m = class_elf(broker);
-	big_endian = data_elf(broker);
-	version_elf(broker);
-	osabi_elf(broker);
-	abi_elf(broker);
-	type_elf(broker, big_endian);
-
-	iseek(fd, 24, SEEK_SET);
-	_read(fd, (char *) broker, src_m / 8);
-
-	elf_entry(broker, src_m, big_endian);
-
-	_close(fd);
-
+	free(header);
+	susp_elf(r);
 	return (0);
 }
