@@ -297,7 +297,6 @@ int main(int __attribute__((__unused__)) argc, char *argv[])
 	stmp_abi(header->e_ident);
 	stmp_type(header->e_type, header->e_ident);
 	stmp_entry(header->e_entry, header->e_ident);
-	lseek(fd, 24, SEEK_SET);
 
 	free(header);
 	close_elf(r);
