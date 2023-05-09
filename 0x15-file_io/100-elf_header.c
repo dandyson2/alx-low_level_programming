@@ -19,7 +19,7 @@ void stmp_entry(unsigned long int e_entry, unsigned char *e_ident);
 void close_elf(int elf);
 
 /**
- * explain_elf - check if a file is an ELF file
+ * check_elf - check if a file is an ELF file
  * @e_ident: ptr to an array
  * Descrip: if file is not an ELF file, exit with code 98
  */
@@ -255,13 +255,13 @@ void close_elf(int elf)
 /**
  * main - display contents in the ELF header
  * at the start of an ELF file
- * @ac: argument number to programm
- * @av: array of pointers to arguments
+ * @argc: argument number to programm
+ * @argv: array of pointers to arguments
  * Return: 0
  * Descrip: if file is not an ELF file,
  * if function fails, exit with code 98
  */
-int main(int __attribute__((__unused__)) ac, char *av[])
+int main(int __attribute__((__unused__)) argc, char *argv[])
 {
 	Elf64_Ehdr *header;
 	int r, w;
@@ -269,14 +269,14 @@ int main(int __attribute__((__unused__)) ac, char *av[])
 	r = open(av[1], O_RDONLY);
 	if (r == -1)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", av[1]);
+		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
 		exit(98);
 	}
 	header = malloc(sizeof(Elf64_Ehdr));
 	if (header == NULL)
 	{
 		close_elf(r);
-		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", av[1]);
+		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
 		exit(98);
 	}
 	w = read(r, header, sizeof(Elf64_Ehdr));
@@ -284,7 +284,7 @@ int main(int __attribute__((__unused__)) ac, char *av[])
 	{
 		free(header);
 		close_elf(r);
-		dprintf(STDERR_FILENO, "Error: `%s`: No such file\n", av[1]);
+		dprintf(STDERR_FILENO, "Error: `%s`: No such file\n", argv[1]);
 		exit(98);
 	}
 	check_elf(header->e_ident);
@@ -297,6 +297,7 @@ int main(int __attribute__((__unused__)) ac, char *av[])
 	stmp_abi(header->e_ident);
 	stmp_type(header->e_type, header->e_ident);
 	stmp_entry(header->e_entry, header->e_ident);
+	lseek(fd, 24, SEEK_SET);
 
 	free(header);
 	close_elf(r);
