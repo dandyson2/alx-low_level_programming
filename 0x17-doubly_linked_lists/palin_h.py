@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 def is_palindrome(num):
-    # Convert number to string and check if it reads the same forwards and backwards
     return str(num) == str(num)[::-1]
 
 def find_largest_palindrome():
@@ -16,4 +15,7 @@ def find_largest_palindrome():
 
 # Find the largest palindrome
 largest_palindrome = find_largest_palindrome()
-print("Largest palindrome:", largest_palindrome)
+
+# Save the result in the file
+with open('102-result', 'wb') as file:
+    file.write(str(largest_palindrome).encode('utf-8'))
