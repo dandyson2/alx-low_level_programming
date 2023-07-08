@@ -20,29 +20,30 @@ return (0);
 unsigned long int index = key_index((const unsigned char *)key, ht->size);
 unsigned long int i = index;
 
-while (ht->array[i] != NULL)
-{
-if (strcmp(ht->array[i]->key, key) == 0)
+while (ht->array[i] && strcmp(ht->array[i]->key, key) != 0)
+i++;
+
+if (ht->array[i])
 {
 free(ht->array[i]->value);
 ht->array[i]->value = value_copy;
 return (1);
 }
-i++;
-}
 
 hash_node_t *new = malloc(sizeof(hash_node_t));
-if (new == NULL)
+if (!new)
 {
 free(value_copy);
 return (0);
 }
+
 new->key = strdup(key);
-if (new->key == NULL)
+if (!new->key)
 {
 free(new);
 return (0);
 }
+
 new->value = value_copy;
 new->next = ht->array[index];
 ht->array[index] = new;
