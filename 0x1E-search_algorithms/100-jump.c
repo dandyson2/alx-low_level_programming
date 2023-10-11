@@ -2,13 +2,12 @@
 #include <math.h>
 
 /**
-* jump_search - searches for a value in a sorted array of integers
+* jump_search - function that searches for a value in a sorted array
 * using the Jump search algorithm
-* @array: array to look into
-* @size: size of the array
-* @value: value to look for
-*
-* Return: index of the value found, or -1 if not found
+* @array: The array to search
+* @size: Array size
+* @value: The value to search for
+* Return: -1 If value is not present in array or if array is NULL.
 */
 
 int jump_search(int *array, size_t size, int value)
